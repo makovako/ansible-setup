@@ -1,0 +1,85 @@
+---
+- hosts: localhost
+  become: yes
+  vars:
+    user: marek
+  tasks:
+    - name: Kubuntu Backports Repository
+      apt_repository:
+        repo: ppa:kubuntu-ppa/backports
+        state: present
+    - name: Update
+      apt:
+        update_cache: yes
+      changed_when: false
+    - name: Upgrade
+      apt:
+        upgrade: yes
+    - name: Auto Remove
+      apt:
+        autoremove: yes
+    - name: Install GUI
+      package:
+        name: "{{ item }}"
+        state: present
+      with_items:
+          - firefox
+          - inkscape
+          - gimp
+          - darktable
+          - libreoffice
+          - transmission
+          - audacity
+          - vlc
+          - mpv
+          - handbrake
+          - partitionmanager
+          - filelight
+    - name: Install CLI
+      package:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - mediainfo
+        - vim
+        - kdeconnect
+        - git
+        - sshfs
+        - gddrescue
+        - unrar
+        - lm-sensors
+        - imagemagick
+        - ttf-mscorefonts-installer
+        - nethogs
+        - wget
+        - curl
+        - network-manager-openvpn
+        - tree
+    - name: Install pip
+      package:
+        name: python-pip
+        state: present
+      register: pip_setup
+    - name: Install from pip
+      pip:
+        name: ['youtube-dl']
+      when: pip_setup is succeeded
+    - name: Install Manually
+      pause:
+        prompt: "{{item}}"
+      with_items:
+        - "Joplin - Appimage official webpage"
+        - "Kednlive - Appimage official webpage"
+        - "VS code - deb on ms site"
+        - "Etcher - deb from github"
+        - "Texlive - search tex live quick install"
+        - "Wire - deb from github"
+    - name: Setup Firefox
+      pause:
+        prompt: "{{item}}"
+      with_items:
+        - "Log in"
+        - "Set up Containers"
+        - "Log in Bitwarden"
+        - "Customize -> Title Bar"
+...
