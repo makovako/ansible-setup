@@ -4,10 +4,6 @@
   vars:
     user: marek
   tasks:
-    - name: Kubuntu Backports Repository
-      apt_repository:
-        repo: ppa:kubuntu-ppa/backports
-        state: present
     - name: Update
       apt:
         update_cache: yes
@@ -33,7 +29,7 @@
           - vlc
           - mpv
           - handbrake
-          - partitionmanager
+          - gparted
           - filelight
     - name: Install CLI
       package:
